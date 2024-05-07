@@ -17,7 +17,7 @@ types:
       - id: dsize
         type: u4
       - id: name
-        type: str
+        type: strz
         encoding: ascii
         size: 32
       - id: maddr

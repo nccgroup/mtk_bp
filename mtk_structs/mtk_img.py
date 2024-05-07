@@ -86,7 +86,7 @@ class MtkImg(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.name = (self._io.read_bytes(12)).decode(u"ascii")
+            self.name = (KaitaiStream.bytes_terminate(self._io.read_bytes(12), 0, False)).decode(u"ascii")
             self.unused = self._io.read_u4le()
             self.file_type = self._io.read_u2le()
             self.flash_type = self._io.read_u1()

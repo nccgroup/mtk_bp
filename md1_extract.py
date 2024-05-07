@@ -30,7 +30,7 @@ def main():
     file_num = 0
 
     for section in md_img.sections:
-        fname = section.sec_hdr.name.rstrip('\x00')
+        fname = section.sec_hdr.name
 
         print(f'{fname}: addr={section.sec_hdr.maddr:#010x}, size={section.sec_hdr.dsize}')
 

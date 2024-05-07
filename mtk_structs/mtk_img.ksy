@@ -63,7 +63,7 @@ types:
   gfh_file_info:
     seq:
       - id: name
-        type: str
+        type: strz
         encoding: ascii
         size: 12
         

@@ -34,7 +34,7 @@ class Md1img(KaitaiStruct):
             if not self.magic == b"\x88\x16\x88\x58":
                 raise kaitaistruct.ValidationNotEqualError(b"\x88\x16\x88\x58", self.magic, self._io, u"/types/header/seq/0")
             self.dsize = self._io.read_u4le()
-            self.name = (self._io.read_bytes(32)).decode(u"ascii")
+            self.name = (KaitaiStream.bytes_terminate(self._io.read_bytes(32), 0, False)).decode(u"ascii")
             self.maddr = self._io.read_u4le()
             self.mode = self._io.read_u4le()
             self.ext_magic = self._io.read_bytes(4)

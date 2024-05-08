@@ -84,3 +84,24 @@ init_cm 0x027b6384 l
 init_cm_wt 0x027b641e l
 ...
 ```
+
+Some debug info files, such as `md1_dbginfodsp` in the example firmware, contain symbols for multiple files.
+For now, the symbols for each file will be printed in sequence with a separator line beginning with `#`, e.g.:
+
+```
+# 0x000010 DSP_USIP0 
+_ss_reset_entry 0x00000000 l
+_vector_excpetion_veneer 0x00000404 l
+...
+# 0x081c4b DSP_USIP1 
+_ss_reset_entry 0x00000000 l
+_vector_excpetion_veneer 0x00000404 l
+...
+# 0x2cb407 DSP_SCQ16 SCQ16_LTE_ROCODE
+void_lte_dmrs_comm_cell_info_trace___uint___uint 0x0003aff8 l
+void_inv_cholesky_4x4_vst_func_Q3_VMLmvpvHalf_Q3_VMLmvpvHalf_Q3_VMLmvpvcHalf_Q3_VMLmvpvcHalf_Q3_VMLmvpvcHalf_Q3_VMLmvpvcHalf_Q3_VMLmvpvcHalf_Q3_VMLmvpvHalf_Q3_VMLmvpvHalf_Q3_VMLmvpvcHalf_Q3_VMLmvpsHalf___uint___uint___uint___uint___uint___uint___uint___uint___uint___uint___uint___uint___uint___uint___uint___uint 0x0004a5ab l
+...
+```
+
+These comment lines are _not_ supported by `ImportSymbolsScript.py`, so splitting must be done manually.
+(TODO: Option to output a symbol text file for each entry.)

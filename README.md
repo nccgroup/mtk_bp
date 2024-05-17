@@ -67,21 +67,21 @@ Firmware is in the extracted `md1rom` file (`000_md1rom`).
 
 ## Debug symbols
 
-Takes symbols from `md1_dbginfo` (full filename given by `md1_file_map`) and outputs them in
+`mtk_dbg_extract.py` takes symbols from `md1_dbginfo` (full filename given by `md1_file_map`) and outputs them in
 a text format that can be imported with Ghidra's `ImportSymbolsScript.py` script.
 
 ```console
-$ ./mtk_dbg_extract.py ../XT2205-1_TESLA_TMO_12_S2ST32.71-118-4-2-6_subsidy-TMO_UNI_RSU_QCOM_regulatory-DEFAULT_cid50_R1_CFC/md1_extract/mapped_files/DbgInfo_NR16.R2.MT6879.TC2.PR1.SP_LENOVO_S0MP1_K6879V1_64_MT6879_NR16_TC2_PR1_SP_V17_P38_03_24_03R_2023_05_19_22_31 | tee debug_symbols.txt
-INT_Vectors 0x0000084c l
-brom_ext_main 0x00000860 l
-INT_SetPLL_Gen98 0x00000866 l
-PLL_Set_CLK_To_26M 0x000009a2 l
-PLL_MD_Pll_Init 0x000009da l
-INT_SetPLL 0x000009dc l
-INT_Initialize_Phase1 0x027b5c80 l
-INT_Initialize_Phase2 0x027b617c l
-init_cm 0x027b6384 l
-init_cm_wt 0x027b641e l
+$ ./mtk_dbg_extract.py symbols DbgInfo_NR16.R2.MT6879.TC2.PR1.SP_LENOVO_S0MP1_K6879V1_64_MT6879_NR16_TC2_PR1_SP_V17_P38_03_24_03R_2023_05_19_22_31 | tee debug_symbols.txt
+INT_Vectors 0x0000084c f
+brom_ext_main 0x00000860 f
+INT_SetPLL_Gen98 0x00000866 f
+PLL_Set_CLK_To_26M 0x000009a2 f
+PLL_MD_Pll_Init 0x000009da f
+INT_SetPLL 0x000009dc f
+INT_Initialize_Phase1 0x027b5c80 f
+INT_Initialize_Phase2 0x027b617c f
+init_cm 0x027b6384 f
+init_cm_wt 0x027b641e f
 ...
 ```
 

@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 import argparse
+import typer
 from mtk_structs.mtk_dbg_info import MtkDbgInfo
 from kaitaistruct import KaitaiStream
+
+
+app = typer.Typer()
 
 
 def file_info(files):
@@ -31,7 +35,15 @@ def symbol_text(symbols, remap=False, as_functions=False):
         print(f'{symbol} {addr:#010x} {def_type}')
 
 
-def show_file_info(mtk_dbg):
+def load_dbg_info(dbg_file):
+    mtk_dbg = MtkDbgInfo(KaitaiStream(dbg_file))
+    assert mtk_dbg.header.cati_type == 0x524E5443  # root container
+    return mtk_dbg
+
+
+@app.command()
+def files(dbg_file: typer.FileBinaryRead):
+    mtk_dbg = load_dbg_info(dbg_file)
     container = mtk_dbg.header.body
 
     for i in range(container.num_entry_info):
@@ -40,36 +52,36 @@ def show_file_info(mtk_dbg):
         file_info(container.entry_stream.entries[i].body.files)
 
 
-def show_symbol_info(mtk_dbg, remap=False, as_functions=False):
+@app.command()
+def symbols(dbg_file: typer.FileBinaryRead, remap: bool = False, labels: bool = False):
+    mtk_dbg = load_dbg_info(dbg_file)
     container = mtk_dbg.header.body
 
     for i in range(container.num_entry_info):
         if container.num_entry_info > 1:
             info = container.entry_info[i]
             print(f'# {info.unk1:#08x} {info.name} {info.unk2}')
-        symbol_text(container.entry_stream.entries[i].body.symbols, remap=remap, as_functions=as_functions)
+        symbol_text(container.entry_stream.entries[i].body.symbols, remap=remap, as_functions=(not labels))
 
     if container.num_entry_info > 1:
         print('# WARNING: output contains symbols for multiple debug info entries (separator lines begin with "#"")')
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('dbg_file', type=argparse.FileType('rb'))
-    parser.add_argument('--files', action='store_true', default=False, help='show file info instead of symbols')
-    parser.add_argument('--remap', action='store_true', default=False, help='remap 0x0 addrs to 0x90000000 addrs')
-    parser.add_argument('--labels', action='store_true', default=False, help='output labels rather than function definitions')
-    args = parser.parse_args()
+@app.command()
+def info(dbg_file: typer.FileBinaryRead):
+    mtk_dbg = load_dbg_info(dbg_file)
 
-    mtk_dbg = MtkDbgInfo(KaitaiStream(args.dbg_file))
+    container = mtk_dbg.header.body
 
-    assert mtk_dbg.header.cati_type == 0x524E5443  # root container
+    for i in range(container.num_entry_info):
+        info = container.entry_info[i]        
+        entry = container.entry_stream.entries[i].body
 
-    if args.files:
-        show_file_info(mtk_dbg)
-    else:
-        show_symbol_info(mtk_dbg, remap=args.remap, as_functions=(not args.labels))
+        assert entry.files[-1].filename == ''
+        assert entry.symbols[-1].symbol == ''
+
+        print(f'{info.unk1:#08x} {info.name} {info.unk2}:\t{len(entry.files) - 1} files, {len(entry.symbols) - 1} symbols')
 
 
 if __name__ == '__main__':
-    main()
+    app()

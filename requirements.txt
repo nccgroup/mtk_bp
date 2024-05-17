@@ -1,1 +1,2 @@
+hexdump==3.3
 kaitaistruct==0.10

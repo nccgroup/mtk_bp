@@ -1,4 +1,4 @@
-# Mediatek BP firmware tools
+# MediaTek BP firmware tools
 
 File formats are defined with [Kaitai](https://kaitai.io/). Files can be interactively explored with the [Kaitai IDE](https://ide.kaitai.io/) using the `ksy` files.
 
@@ -62,7 +62,7 @@ md1_file_map: addr=0xffffffff, size=889
         extracted to 023_md1_file_map
 ```
 
-Firmware is in the extracted `md1rom` file (`000_md1rom`).
+Firmware is in the extracted `md1rom` file (`000_md1rom`). For nanoMIPS binaries, see the [nanoMIPS Ghidra extension](https://github.com/nccgroup/ghidra-nanomips).
 
 
 ## Debug symbols

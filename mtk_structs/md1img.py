@@ -21,7 +21,7 @@ class Md1img(KaitaiStruct):
         while True:
             _ = Md1img.Section(self._io, self, self._root)
             self.sections.append(_)
-            if _.magic != 1485313672:
+            if  ((_.magic != 1485313672) or (self._io.is_eof())) :
                 break
             i += 1
 

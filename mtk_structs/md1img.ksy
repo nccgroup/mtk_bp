@@ -7,7 +7,7 @@ seq:
   - id: sections
     type: section
     repeat: until
-    repeat-until: _.magic != 0x58881688
+    repeat-until: _.magic != 0x58881688 or _io.eof
 
 types:
 

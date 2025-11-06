@@ -1,6 +1,6 @@
 click==8.1.7
 hexdump==3.3
-kaitaistruct==0.10
+kaitaistruct==0.11
 markdown-it-py==3.0.0
 mdurl==0.1.2
 Pygments==2.18.0

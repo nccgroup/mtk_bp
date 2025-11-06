@@ -4,6 +4,8 @@ from mtk_structs.mtk_img import MtkImg
 from kaitaistruct import KaitaiStream
 from hexdump import hexdump
 
+GFH_MAGIC = b'MMM'
+
 
 def print_attrs(obj):
     keys = list(filter(lambda x: not x.startswith('_'), obj.__dict__))
@@ -33,7 +35,16 @@ def main():
     parser.add_argument('md1rom', type=argparse.FileType('rb'), help='path to md1rom')
     args = parser.parse_args()
 
-    mtk_img = MtkImg(KaitaiStream(args.md1rom))
+    magic_pos = args.md1rom.read().find(GFH_MAGIC)
+    if magic_pos == -1:
+        print("header not found")
+        return
+
+    print(f'header found at {magic_pos:#x}')
+
+    ks = KaitaiStream(args.md1rom)
+    ks.seek(magic_pos)
+    mtk_img = MtkImg(ks)
 
     print_gfh_info(mtk_img.file_info)
 

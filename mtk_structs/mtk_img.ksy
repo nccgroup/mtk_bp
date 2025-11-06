@@ -8,9 +8,6 @@ meta:
 # u-boot/u-boot/blob/master/tools/mtk_image.h
 
 seq:
-  - id: jump_code
-    size: 0x400
-    
   - id: file_info
     type: gfh_common_header
 

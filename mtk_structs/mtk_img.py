@@ -26,7 +26,6 @@ class MtkImg(KaitaiStruct):
         self._read()
 
     def _read(self):
-        self.jump_code = self._io.read_bytes(1024)
         self.file_info = MtkImg.GfhCommonHeader(self._io, self, self._root)
         self._raw_hdrs = self._io.read_bytes((self.file_info.body.hdr_size - self.file_info.size))
         _io__raw_hdrs = KaitaiStream(BytesIO(self._raw_hdrs))

@@ -6,19 +6,20 @@ meta:
 seq:
   - id: sections
     type: section
-    repeat: eos
+    repeat: until
+    repeat-until: _.magic != 0x58881688
 
 types:
+
+  empty_body: {}
+
   header:
     seq:
-      - id: magic
-        # 0x58881688
-        contents: [0x88, 0x16, 0x88, 0x58]
       - id: dsize
         type: u4
       - id: name
         type: strz
-        encoding: ascii
+        encoding: ASCII
         size: 32
       - id: maddr
         type: u4
@@ -45,6 +46,17 @@ types:
         size: hdr_size - 0x50
 
   section:
+    seq:
+      - id: magic
+        type: u4
+      - id: body
+        type:
+          switch-on: magic
+          cases:
+            0x58881688: section_body
+            _: empty_body
+
+  section_body:
     seq:
       - id: sec_hdr
         type: header

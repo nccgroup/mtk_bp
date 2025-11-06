@@ -30,9 +30,13 @@ def main():
     file_num = 0
 
     for section in md_img.sections:
-        fname = section.sec_hdr.name
+        if type(section.body) is Md1img.EmptyBody:
+            continue
 
-        print(f'{fname}: addr={section.sec_hdr.maddr:#010x}, size={section.sec_hdr.dsize}')
+        sec_hdr = section.body.sec_hdr
+        fname = sec_hdr.name
+
+        print(f'{fname}: addr={sec_hdr.maddr:#010x}, size={sec_hdr.dsize}')
 
         if args.outdir is not None:
             out_path = os.path.join(args.outdir, f'{file_num:03}_{os.path.basename(fname)}')

@@ -42,7 +42,7 @@ def main():
             out_path = os.path.join(args.outdir, f'{file_num:03}_{os.path.basename(fname)}')
             file_num += 1
             with open(out_path, 'wb') as out_file:
-                out_file.write(section.sec_data)
+                out_file.write(section.body.sec_data)
                 print(f'\textracted to {os.path.basename(out_path)}')
 
 

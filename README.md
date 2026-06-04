@@ -1,13 +1,15 @@
 # MediaTek BP firmware tools
 
-File formats are defined with [Kaitai](https://kaitai.io/). Files can be interactively explored with the [Kaitai IDE](https://ide.kaitai.io/) using the `ksy` files.
+This repository contains [Kaitai](https://kaitai.io/)-based file format definitions related to MediaTek modem firmware, as well as some basic command line tools for interacting with these file types. The [Kaitai IDE](https://ide.kaitai.io/) can also be used to interactively explore files using the Kaitai definitions (`*.ksy` files located in the `mtk_structs` directory).
+
+A Ghidra loader for `md1img` files based on these definitions is available at <https://github.com/nccgroup/ghidra-mtk-loader>.
 
 Using [`XT2205-1_TESLA_TMO_12_S2STS32.71-118-4-2-6-3_subsidy-TMO_UNI_RSU_QCOM_regulatory-DEFAULT_cid50_CFC.xml.zip`](https://mirrors.lolinet.com/firmware/lenomola/tesla/official/TMO/XT2205-1_TESLA_TMO_12_S2STS32.71-118-4-2-6-3_subsidy-TMO_UNI_RSU_QCOM_regulatory-DEFAULT_cid50_CFC.xml.zip) from
 <https://mirrors.lolinet.com/firmware/lenomola/tesla/official/TMO/> as an example:
 
-## Firmware image
+## Unpacking the `md1img` container
 
-Extract contents of `md1img.img`:
+`md1_extract.py` extracts the files contained in an `md1img`:
 
 ```
 $ ./md1_extract.py ../XT2205-1_TESLA_TMO_12_S2STS32.71-118-4-2-6-3_subsidy-TMO_UNI_RSU_QCOM_regulatory-DEFAULT_cid50_CFC/md1img.img --outdir ./md1img_out/
@@ -62,10 +64,10 @@ md1_file_map: addr=0xffffffff, size=889
         extracted to 023_md1_file_map
 ```
 
-Firmware is in the extracted `md1rom` file (`000_md1rom`). For nanoMIPS binaries, see the [nanoMIPS Ghidra extension](https://github.com/nccgroup/ghidra-nanomips).
+The main modem firmware is in the `md1rom` file (`000_md1rom`). For reverse engineering nanoMIPS binaries, see the [nanoMIPS Ghidra extension](https://github.com/nccgroup/ghidra-nanomips).
 
 
-## Debug symbols
+## Listing debug symbols
 
 `mtk_dbg_extract.py` takes symbols from `md1_dbginfo` (full filename given by `md1_file_map`) and outputs them in
 a text format that can be imported with Ghidra's `ImportSymbolsScript.py` script.
